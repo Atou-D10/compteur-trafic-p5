@@ -1,0 +1,7 @@
+# torch est déjà installé sur Google Colab
+ultralytics>=8.3
+supervision>=0.25
+gradio>=4.44
+opencv-python-headless>=4.9
+pandas>=2.0
+matplotlib>=3.8

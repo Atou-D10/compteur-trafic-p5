@@ -1,0 +1,23 @@
+# Vidéos et résultats (trop lourds pour Git)
+data/videos/*
+!data/videos/.gitkeep
+outputs/*
+!outputs/.gitkeep
+
+# Poids des modèles YOLO
+*.pt
+*.onnx
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Jupyter / Colab
+.ipynb_checkpoints/
+
+# Système
+.DS_Store
+Thumbs.db
