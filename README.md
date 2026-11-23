@@ -65,8 +65,72 @@ Voir `data/README.md` pour la source et la licence de chaque vidéo.
 
 ## Équipe
 
-- Atou
-- May
-- Fallou
+| Membre | GitHub | Tâche |
+|---|---|---|
+| Fallou Mbaye | [@galassmyname](https://github.com/galassmyname) | 1 · Données, détection et suivi |
+| Atou Diagne | [@Atou-D10](https://github.com/Atou-D10) | 2 · Comptage et graphique par minute |
+| Maimouna Diallo | [@Mayra-99](https://github.com/Mayra-99) | 3 · Mesure, démo Gradio et livrables |
 
-Répartition des tâches : à compléter.
+## Répartition des tâches
+
+Les tâches se font **l'une après l'autre** : chaque membre part de `main` à jour, travaille sur sa branche, ouvre une Pull Request, la fait fusionner, puis prévient le suivant.
+
+```bash
+git checkout main && git pull
+git checkout -b <nom-de-branche>
+# ... travail ...
+git add . && git commit -m "<message>" && git push -u origin <nom-de-branche>
+```
+
+---
+
+### Tâche 1 · Données, détection et suivi — Fallou Mbaye
+
+Branche : `tache-1-detection`
+
+- [ ] Trouver ou filmer une vidéo de rue d'environ 3 minutes avec voitures, motos, bus et piétons (caméra fixe, de préférence en hauteur).
+- [ ] Renseigner sa source et sa licence dans `data/README.md`.
+- [ ] Compter à la main, sur **une minute** choisie, les voitures, motos, bus et piétons qui franchissent la ligne prévue. Noter le résultat dans `data/comptage_manuel.csv`. Cette minute ne sert pas à régler le système.
+- [ ] `src/config.py` : modèle YOLO, seuil de confiance, classes COCO (piéton 0, voiture 2, moto 3, bus 5), position de la ligne.
+- [ ] `src/detection.py` : charger YOLO et lancer le suivi (ByteTrack) sur la vidéo.
+- [ ] Notebook : section « Détection et suivi » qui affiche quelques images avec les boîtes et les identifiants.
+
+**Terminé quand :** sur Colab avec GPU, chaque véhicule ou piéton a une boîte et un identifiant qui reste à peu près stable pendant qu'il traverse l'image.
+
+---
+
+### Tâche 2 · Comptage et graphique — Atou Diagne
+
+Branche : `tache-2-comptage`
+
+- [ ] `src/comptage.py` : détecter quand le centre d'un objet passe d'un côté de la ligne à l'autre. **Un identifiant n'est compté qu'une seule fois** (c'est le piège du sujet : éviter le double comptage).
+- [ ] Garder, pour chaque passage, l'instant (en secondes) et la catégorie.
+- [ ] `src/visualisation.py` : produire la vidéo annotée (ligne, boîtes, compteurs à l'écran) dans `outputs/`.
+- [ ] `src/visualisation.py` : graphique du nombre de passages **par minute et par catégorie**.
+- [ ] Notebook : sections « Comptage » et « Graphique par minute ».
+
+**Terminé quand :** le notebook produit les totaux par catégorie, la vidéo annotée et le graphique sur la vidéo complète.
+
+---
+
+### Tâche 3 · Mesure, démo et livrables — Maimouna Diallo
+
+Branche : `tache-3-demo`
+
+- [ ] `src/evaluation.py` : comparer le comptage automatique au comptage manuel sur la même minute, et calculer l'erreur en % par catégorie : `|auto − manuel| / manuel × 100`.
+- [ ] Remplir le tableau « Résultats » du README.
+- [ ] Repérer et noter 2 ou 3 cas d'échec (occlusion, moto cachée par un bus, piétons groupés...).
+- [ ] `app.py` : interface Gradio partageable. On dépose une vidéo, on obtient la vidéo annotée, les totaux et le graphique. Tester sur une **autre vidéo** que celle de la tâche 1 (le jury choisira l'entrée).
+- [ ] `docs/schema_pipeline.png` : schéma du pipeline.
+- [ ] `docs/fiche_technique.md` : choix d'outils justifiés, mesures, limites (une page).
+- [ ] README complet : objectif, installation, utilisation, schéma, sources.
+
+**Terminé quand :** la démo Gradio tourne sur une vidéo inconnue et tous les livrables sont dans le dépôt.
+
+---
+
+### Ensemble, à la fin
+
+- [ ] Préparer la soutenance de 10 minutes dans `docs/soutenance/` : problème et utilisateur (1 min), schéma, démo en direct, mesures, limites.
+- [ ] Répétition à trois, chronométrée.
+- [ ] Bonus possible si le temps le permet : estimation de la vitesse.
