@@ -34,11 +34,22 @@ Schéma : `docs/schema_pipeline.png` (à ajouter).
 2. Menu **Exécution → Modifier le type d'exécution → GPU T4**.
 3. Exécuter les cellules dans l'ordre.
 
-En local :
+En local (Python 3.10 ou plus) :
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate        # Windows : .venv\Scripts\activate
 pip install -r requirements.txt
 ```
+
+**Windows : si l'activation échoue** avec le message « l'exécution de scripts est désactivée sur ce système », c'est la politique d'exécution de PowerShell qui bloque le script. Autorisez-le pour la fenêtre en cours seulement, puis réactivez :
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+.venv\Scripts\activate
+```
+
+Pour ne plus avoir à le refaire, remplacez `-Scope Process` par `-Scope CurrentUser`. Autre solution : utilisez l'invite de commandes (cmd) au lieu de PowerShell, avec `.venv\Scripts\activate.bat`.
 
 ## Utilisation
 
