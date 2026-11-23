@@ -73,20 +73,12 @@ Voir `data/README.md` pour la source et la licence de chaque vidéo.
 
 ## Répartition des tâches
 
-Les tâches se font **l'une après l'autre** : chaque membre part de `main` à jour, travaille sur sa branche, ouvre une Pull Request, la fait fusionner, puis prévient le suivant.
-
-```bash
-git checkout main && git pull
-git checkout -b <nom-de-branche>
-# ... travail ...
-git add . && git commit -m "<message>" && git push -u origin <nom-de-branche>
-```
+Les tâches se font l'une après l'autre.
 
 ---
 
 ### Tâche 1 · Données, détection et suivi — Fallou Mbaye
 
-Branche : `tache-1-detection`
 
 - [ ] Trouver ou filmer une vidéo de rue d'environ 3 minutes avec voitures, motos, bus et piétons (caméra fixe, de préférence en hauteur).
 - [ ] Renseigner sa source et sa licence dans `data/README.md`.
@@ -101,7 +93,6 @@ Branche : `tache-1-detection`
 
 ### Tâche 2 · Comptage et graphique — Atou Diagne
 
-Branche : `tache-2-comptage`
 
 - [ ] `src/comptage.py` : détecter quand le centre d'un objet passe d'un côté de la ligne à l'autre. **Un identifiant n'est compté qu'une seule fois** (c'est le piège du sujet : éviter le double comptage).
 - [ ] Garder, pour chaque passage, l'instant (en secondes) et la catégorie.
@@ -115,7 +106,6 @@ Branche : `tache-2-comptage`
 
 ### Tâche 3 · Mesure, démo et livrables — Maimouna Diallo
 
-Branche : `tache-3-demo`
 
 - [ ] `src/evaluation.py` : comparer le comptage automatique au comptage manuel sur la même minute, et calculer l'erreur en % par catégorie : `|auto − manuel| / manuel × 100`.
 - [ ] Remplir le tableau « Résultats » du README.
