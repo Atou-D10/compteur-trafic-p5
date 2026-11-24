@@ -23,6 +23,30 @@ def charger_modele(nom=config.MODELE):
     return YOLO(nom)
 
 
+def part_dans(petite, grande):
+    """Part (de 0 à 1) de la boîte `petite` qui se trouve dans la boîte `grande`."""
+    x1 = max(petite[0], grande[0])
+    y1 = max(petite[1], grande[1])
+    x2 = min(petite[2], grande[2])
+    y2 = min(petite[3], grande[3])
+    intersection = max(0, x2 - x1) * max(0, y2 - y1)
+    aire = (petite[2] - petite[0]) * (petite[3] - petite[1])
+    return intersection / aire if aire > 0 else 0
+
+
+def enlever_motards(detections, seuil=config.SEUIL_MOTARD):
+    """Enlève les « piétons » qui sont en fait assis sur une moto."""
+    motos = [d["boite"] for d in detections if d["classe"] == "moto"]
+    gardees = []
+    for d in detections:
+        if d["classe"] == "pieton" and any(
+            part_dans(d["boite"], m) >= seuil for m in motos
+        ):
+            continue  # c'est un motard : on ne le garde pas
+        gardees.append(d)
+    return gardees
+
+
 def suivre_video(chemin_video=config.VIDEO, modele=None):
     """Analyse la vidéo image par image.
 
@@ -65,6 +89,7 @@ def suivre_video(chemin_video=config.VIDEO, modele=None):
                         "boite": tuple(int(v) for v in xyxy),
                     }
                 )
+        detections = enlever_motards(detections)
         yield numero_image, r.orig_img, detections
 
 

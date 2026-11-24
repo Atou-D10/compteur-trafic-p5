@@ -11,7 +11,7 @@ RACINE = Path(__file__).resolve().parent.parent  # dossier compteur-trafic-p5
 DOSSIER_VIDEOS = RACINE / "data" / "videos"
 DOSSIER_SORTIES = RACINE / "outputs"
 
-# Vidéo analysée (à remplacer par la vidéo filmée par le groupe)
+# Vidéo analysée : filmée par le groupe à Dakar (voir data/README.md)
 VIDEO = DOSSIER_VIDEOS / "rue.mp4"
 
 # --- Modèle YOLO --------------------------------------------------------
@@ -30,6 +30,12 @@ CLASSES = {
     3: "moto",  # motorcycle
     5: "bus",  # bus
 }
+
+# --- Motards ----------------------------------------------------------
+# YOLO voit le conducteur d'une moto comme un « piéton ». Si au moins 30 %
+# de la boîte d'un piéton est dans la boîte d'une moto, c'est un motard :
+# on l'enlève des piétons.
+SEUIL_MOTARD = 0.3
 
 # --- Suivi des objets ---------------------------------------------------
 # ByteTrack donne un identifiant à chaque objet et le garde d'une image à l'autre.
