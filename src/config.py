@@ -1,41 +1,41 @@
 """Paramètres du compteur de trafic.
- 
+
 Tous les réglages sont ici : on les change à un seul endroit,
 et les autres fichiers (detection, comptage, visualisation) les importent.
 """
+
 from pathlib import Path
- 
+
 # --- Dossiers du projet -------------------------------------------------
-RACINE = Path(__file__).resolve().parent.parent   # dossier compteur-trafic-p5
+RACINE = Path(__file__).resolve().parent.parent  # dossier compteur-trafic-p5
 DOSSIER_VIDEOS = RACINE / "data" / "videos"
 DOSSIER_SORTIES = RACINE / "outputs"
- 
+
 # Vidéo analysée (à remplacer par la vidéo filmée par le groupe)
-VIDEO = DOSSIER_VIDEOS / "pexels_45s.mp4"
- 
+VIDEO = DOSSIER_VIDEOS / "rue.mp4"
+
 # --- Modèle YOLO --------------------------------------------------------
 # yolo11n = YOLO11 version « nano » : la plus rapide, suffisante sur le GPU T4.
 # Le fichier .pt est téléchargé automatiquement au premier lancement.
 MODELE = "yolo11n.pt"
- 
+
 # Seuil de confiance : on ignore les détections dont YOLO est sûr à moins de 30 %.
 CONFIANCE = 0.3
- 
+
 # --- Classes suivies (numéros du jeu de données COCO) -------------------
 # YOLO connaît 80 classes ; on ne garde que ces 4.
 CLASSES = {
-    0: "pieton",   # person
+    0: "pieton",  # person
     2: "voiture",  # car
-    3: "moto",     # motorcycle
-    5: "bus",      # bus
+    3: "moto",  # motorcycle
+    5: "bus",  # bus
 }
- 
+
 # --- Suivi des objets ---------------------------------------------------
 # ByteTrack donne un identifiant à chaque objet et le garde d'une image à l'autre.
 TRACKER = "bytetrack.yaml"
- 
+
 # --- Ligne virtuelle (utilisée par la tâche 2) --------------------------
 # Position verticale de la ligne, en fraction de la hauteur de l'image :
 # 0.0 = tout en haut, 0.5 = au milieu, 1.0 = tout en bas.
 LIGNE_Y = 0.5
- 
