@@ -46,7 +46,7 @@ class CompteurLigne:
         return False
 
 
-    def compter_video(chemin_video=None):
+def compter_video(chemin_video=None):
         """Analyse toute la vidéo et renvoie le CompteurLigne rempli."""
         import cv2
         from src import config
