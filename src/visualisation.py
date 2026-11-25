@@ -44,3 +44,50 @@ def graphique_par_minute(passages, chemin_sortie="outputs/graphique_par_minute.p
     fig.savefig(chemin_sortie)
     plt.close(fig)
     return comptes
+
+
+def video_comptage(chemin_video=None, chemin_sortie="outputs/comptage.mp4"):
+    """Crée la vidéo annotée (ligne, boîtes, compteurs) et renvoie le compteur rempli."""
+    import cv2
+    from src import config
+    from src.comptage import CompteurLigne, position_ligne
+    from src.detection import dessiner, suivre_video
+
+    chemin_video = chemin_video or config.VIDEO
+    capture = cv2.VideoCapture(str(chemin_video))
+    if not capture.isOpened():
+        raise FileNotFoundError(f"Vidéo introuvable : {chemin_video}")
+    fps = capture.get(cv2.CAP_PROP_FPS) or 30
+    largeur = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+    hauteur = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    capture.release()
+
+    x_ligne = int(position_ligne(largeur, config.LIGNE_X))
+    compteur = CompteurLigne(x_ligne)
+
+    Path(chemin_sortie).parent.mkdir(parents=True, exist_ok=True)
+    ecriture = cv2.VideoWriter(
+        str(chemin_sortie), cv2.VideoWriter_fourcc(*"mp4v"), fps, (largeur, hauteur)
+    )
+
+    for numero_image, image, detections in suivre_video(chemin_video):
+        for d in detections:
+            compteur.mettre_a_jour(d, numero_image / fps)
+
+        dessiner(image, detections)  # boîtes et identifiants (code de Fallou)
+        cv2.line(image, (x_ligne, 0), (x_ligne, hauteur), (0, 0, 255), 3)  # ligne rouge
+
+        # Compteurs en haut à gauche, sur un fond noir pour être lisibles
+        cv2.rectangle(image, (10, 10), (260, 150), (0, 0, 0), -1)
+        for i, classe in enumerate(CATEGORIES):
+            texte = f"{classe} : {compteur.totaux[classe]}"
+            cv2.putText(image, texte, (20, 45 + i * 32),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2)
+
+        ecriture.write(image)
+        if numero_image % 300 == 0:
+            print(f"image {numero_image} : {compteur.totaux}")
+
+    ecriture.release()
+    print("Vidéo annotée :", chemin_sortie)
+    return compteur
