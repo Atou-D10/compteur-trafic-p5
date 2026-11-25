@@ -44,3 +44,25 @@ class CompteurLigne:
             self.passages.append((temps_s, detection["classe"]))
             return True
         return False
+
+
+    def compter_video(chemin_video=None):
+        """Analyse toute la vidéo et renvoie le CompteurLigne rempli."""
+        import cv2
+        from src import config
+        from src.detection import suivre_video
+
+        chemin_video = chemin_video or config.VIDEO
+        capture = cv2.VideoCapture(str(chemin_video))
+        if not capture.isOpened():
+            raise FileNotFoundError(f"Vidéo introuvable : {chemin_video}")
+        fps = capture.get(cv2.CAP_PROP_FPS) or 30
+        largeur = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+        capture.release()
+
+        compteur = CompteurLigne(position_ligne(largeur, config.LIGNE_X))
+        for numero_image, _, detections in suivre_video(chemin_video):
+            temps_s = numero_image / fps
+            for d in detections:
+                compteur.mettre_a_jour(d, temps_s)
+        return compteur
