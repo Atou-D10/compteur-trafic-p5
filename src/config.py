@@ -42,6 +42,8 @@ SEUIL_MOTARD = 0.3
 TRACKER = "bytetrack.yaml"
 
 # --- Ligne virtuelle (utilisée par la tâche 2) --------------------------
-# Position verticale de la ligne, en fraction de la hauteur de l'image :
-# 0.0 = tout en haut, 0.5 = au milieu, 1.0 = tout en bas.
-LIGNE_Y = 0.5
+# Dans rue.mp4, les véhicules roulent de gauche à droite (et inversement) :
+# la ligne est donc VERTICALE, et ils la franchissent en la traversant.
+# Position horizontale de la ligne, en fraction de la largeur de l'image :
+# 0.0 = tout à gauche, 0.5 = au milieu, 1.0 = tout à droite.
+LIGNE_X = 0.5
