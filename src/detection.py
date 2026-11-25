@@ -67,6 +67,7 @@ def suivre_video(chemin_video=config.VIDEO, modele=None):
         tracker=config.TRACKER,
         classes=list(config.CLASSES),  # seulement piéton, voiture, moto, bus
         conf=config.CONFIANCE,
+        imgsz=config.IMGSZ,
         verbose=False,
     )
 

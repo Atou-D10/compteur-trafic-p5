@@ -15,9 +15,11 @@ DOSSIER_SORTIES = RACINE / "outputs"
 VIDEO = DOSSIER_VIDEOS / "rue.mp4"
 
 # --- Modèle YOLO --------------------------------------------------------
-# yolo11n = YOLO11 version « nano » : la plus rapide, suffisante sur le GPU T4.
-# Le fichier .pt est téléchargé automatiquement au premier lancement.
-MODELE = "yolo11n.pt"
+
+MODELE = "yolo11s.pt"
+# Taille (en pixels) à laquelle YOLO analyse chaque image.
+# 640 par défaut : trop petit pour les motos lointaines. 1280 les garde visibles.
+IMGSZ  = 1280
 
 # Seuil de confiance : on ignore les détections dont YOLO est sûr à moins de 30 %.
 CONFIANCE = 0.3
