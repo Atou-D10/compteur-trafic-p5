@@ -19,15 +19,28 @@ def cote(point, x_ligne):
 
 
 class CompteurLigne:
-    """Retient le côté de chaque objet et détecte quand il franchit la ligne."""
+    """Retient le côté de chaque objet, détecte les franchissements et compte."""
 
     def __init__(self, x_ligne):
         self.x_ligne = x_ligne
         self.dernier_cote = {}   # id de suivi -> -1 (gauche) ou +1 (droite)
+        self.deja_comptes = set()   # id déjà comptés (anti double comptage)
+        self.totaux = {"voiture": 0, "moto": 0, "bus": 0, "pieton": 0}
+        self.passages = []   # liste de (temps_s, classe), pour le graphique
 
     def a_franchi(self, id_objet, boite):
         """Renvoie True si l'objet vient de changer de côté depuis l'image précédente."""
         nouveau = cote(centre(boite), self.x_ligne)
-        ancien = self.dernier_cote.get(id_objet)   # None si on voit l'objet pour la première fois
+        ancien = self.dernier_cote.get(id_objet)
         self.dernier_cote[id_objet] = nouveau
         return ancien is not None and ancien != nouveau
+
+    def mettre_a_jour(self, detection, temps_s):
+        """À appeler pour chaque objet détecté. Renvoie True si on vient de le compter."""
+        id_objet = detection["id"]
+        if self.a_franchi(id_objet, detection["boite"]) and id_objet not in self.deja_comptes:
+            self.deja_comptes.add(id_objet)
+            self.totaux[detection["classe"]] += 1
+            self.passages.append((temps_s, detection["classe"]))
+            return True
+        return False
